@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>ToDoリスト</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="wrapper">
+        <section class="title">
+            <div id="title">
+                <h1>ToDoリスト</h1>
+            </div>
+        </section>
+
+        <section class="new">
+            <div class="number">
+                <p class="p">No.▼</p>
+                <input type="text" placeholder="1から5" name="" id="number">
+            </div>
+            <div class="project">
+                <p class="p">プロジェクト名▼</p class="p">
+                <input type="text" placeholder="プロジェクトを入力" value="" name="" id="pj">
+            </div>
+            <div class="content">
+                <p class="p">To Do▼</p class="p">
+                <input type="text" placeholder="タスクを入力" name="" id="content">
+            </div>
+            <div class="regist">
+                <button id="regist">登録</button>
+            </div>
+        </section>
+
+        <!-- <button id="listBtn">プロジェクトNo.を表示</button>
+
+        <section class="pjList">
+            <div id="pjList" style="display: none"></div>
+        </section> -->
+
+        <section class="viewAll">
+            <button id="viewAll">一覧表示▼</button>
+        </section>
+
+        <!-- <section class="find">
+            <button id="find">検索</button>
+            <input type="search" name="" id="search">
+        </section> -->
+
+        <section class="result">
+            <div id="result" style="display: none"></div>
+        </section>
+    </div>
+
+
+    <!-- JQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <!-- <script src="./todo.js"></script> -->
+
+    <!-- The core Firebase JS SDK is always required and must be listed first -->
+    <script src="https://www.gstatic.com/firebasejs/7.8.0/firebase.js"></script>
+
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+         https://firebase.google.com/docs/web/setup#available-libraries -->
+    
+    <script>
+      // Your web app's Firebase configuration
+      var firebaseConfig = {
+        apiKey: "AIzaSyDBPOWDM9W3UgH2WEZXhuwGiZ0MTGpLX8U",
+        authDomain: "review04-a23c4.firebaseapp.com",
+        databaseURL: "https://review04-a23c4.firebaseio.com",
+        projectId: "review04-a23c4",
+        storageBucket: "review04-a23c4.appspot.com",
+        messagingSenderId: "294367028373",
+        appId: "1:294367028373:web:b7a343f563fc1987a3279c"
+      };
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);    
+
+    const reg = firebase.database().ref();
+
+    $('#regist').on('click',function(){
+        reg.push({
+        number:$('#number').val(),
+        pj:$('#pj').val(),
+        content:$('#content').val(),
+        })
+    $('#number').val("");
+    $('#pj').val("");
+    $('#content').val("");
+    });
+    
+    reg.on('child_added',function(data){
+        var all = data.val();
+        console.log(all);
+        var display = `<dl><dt>${all.number}</dt><dd>${all.pj}</dd><dd>${all.content}</dd></dl>`
+        $('#result').append(display);
+        $('dt:contains("1")').css("background-color","lightcoral");
+        $('dt:contains("2")').css("background-color","lightpink");
+        $('dt:contains("3")').css("background-color","lightseagreen");
+        $('dt:contains("4")').css("background-color","lightgreen");
+        $('dt:contains("5")').css("background-color","lightskyblue");
+        })
+
+    // $('#listBtn').on('click',function(){
+    //     $('#pjList').toggle();
+    // })
+
+    $('#viewAll').on('click',function(){
+        $('#result').toggle();
+    })
+
+    $("#content").on("keydown", function (e) {
+        console.log(e.keyCode);
+        console.log(e,"event");
+        if(e.keyCode == 13){
+            reg.push({
+            number:$('#number').val(),
+            pj:$('#pj').val(),
+            content:$('#content').val(),
+            })
+            $('#number').val("");
+            $('#pj').val("");
+            $('#content').val("");
+        }
+    })
+    
+    </script>
+
+</body>
+</html>
